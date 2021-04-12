@@ -74,7 +74,7 @@ function onGalleryClick (evt) {
 function openModal() {    // при нажатии на элемент добавляем класс открытия модального окна. 
   lightboxRef.classList.add('is-open');     //модальное окно
 
-  window.addEventListener('keydown', onPressEscape); 
+  window.addEventListener('keydown', onEscKeyPress); 
   window.addEventListener('keydown',  onArrowLeftPress);
   window.addEventListener('keydown', onArrowRightPress);
   
@@ -88,7 +88,7 @@ function closeModal() {
   galleryImgRef.src = ''; // Очистка значения атрибута src элемента img.lightbox__image.
   galleryImgRef.alt = '';
 
-  window.removeEventListener('keydown', onPressEscape); //'keydown реагирует на все клавиши 
+  window.removeEventListener('keydown', onEscKeyPress); //'keydown реагирует на все клавиши 
   window.removeEventListener('keydown', onArrowLeftPress);
   window.removeEventListener('keydown', onArrowRightPress);
 }
@@ -105,14 +105,9 @@ function onOverlayClick(evt) {
 }
 
 // Закрытие модального окна по нажатию клавиши ESC.
-lightboxOverlay.addEventListener('click', onPressEscape)
+lightboxOverlay.addEventListener('click', onEscKeyPress)
 
-// function onPressEscape(evt) {
-//   if (evt.code === 'Escape') {
-//       closeModal();
-//     }
-// }
-function onPressEscape(evt) {
+function onEscKeyPress(evt) {
   const ESC_KEY_CODE = 'Escape';
   const isEscKey = evt.code === ESC_KEY_CODE;
 console.log(evt);
@@ -120,6 +115,11 @@ console.log(evt);
   closeModal();
   }
 }
+// function onPressEscape(evt) {
+//   if (evt.code === 'Escape') {
+//       closeModal();
+//     }
+// }
 // Пролистывание изображений галереи в открытом модальном окне клавишами "влево" и "вправо".
 //ArrowLeft
 
