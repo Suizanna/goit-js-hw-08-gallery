@@ -1,7 +1,5 @@
 import gallery from './gallery-items.js'; 
-
-// Шаг1. Создание и рендер разметки по массиву данных и предоставленному шаблону.  по примеру с вебинара 
-
+ 
 const galleryRef = document.querySelector('.js-gallery'); //общий родитель картинок
 const lightboxRef = document.querySelector('.js-lightbox'); //модальное окно
 
@@ -12,7 +10,9 @@ const btnClose = document.querySelector('.lightbox__button');
 const lightboxOverlay = document.querySelector('.lightbox__overlay'); //серый фон в модалке
 
 
+// Создание и рендер разметки по массиву данных и предоставленному шаблону. 
 // Динамическая подстановка значений в шаблонную строку через деструктуризацию.
+
 function createGallery(images) {   
   return images.map(({ preview, original, description }) => {
         return `<li class="gallery__item">
@@ -36,7 +36,8 @@ const cardsGallery = createGallery(gallery); // хранит результат 
 
 galleryRef.insertAdjacentHTML('beforeend', cardsGallery); //зарендерим разметку в HTML js-gallery
 
-// Шаг2. Реализация делегирования на галерее ul.js-gallery и получение url большого изображения.
+
+// Реализация делегирования на галерее ul.js-gallery и получение url большого изображения.
 
 // вешаем слушателя на ul ('.js-gallery')
 galleryRef.addEventListener('click', onGalleryClick)
@@ -69,14 +70,15 @@ function onGalleryClick (evt) {
    openModal();
 }
 
-// Шаг3. Открытие модального окна по клику на элементе галереи.
+
+// Открытие модального окна по клику на элементе галереи.
 
 function openModal() {    // при нажатии на элемент добавляем класс открытия модального окна. 
   lightboxRef.classList.add('is-open');     //модальное окно
 
-  window.addEventListener('keydown', onEscKeyPress); 
-  window.addEventListener('keydown',  onArrowLeftPress);
-  window.addEventListener('keydown', onArrowRightPress);
+  window.addEventListener('keydown', onPressEscape); 
+  window.addEventListener('keydown', onPressRightArrow);
+  window.addEventListener('keydown', onPressLeftArrow);
   
 }
 // Закрытие модального окна по клику на кнопку .lightbox__button.
@@ -88,9 +90,9 @@ function closeModal() {
   galleryImgRef.src = ''; // Очистка значения атрибута src элемента img.lightbox__image.
   galleryImgRef.alt = '';
 
-  window.removeEventListener('keydown', onEscKeyPress); //'keydown реагирует на все клавиши 
-  window.removeEventListener('keydown', onArrowLeftPress);
-  window.removeEventListener('keydown', onArrowRightPress);
+  window.removeEventListener('keydown', onPressEscape); //'keydown реагирует на все клавиши 
+  window.removeEventListener('keydown', onPressRightArrow);
+  window.removeEventListener('keydown', onPressLeftArrow);
 }
 
 
@@ -105,25 +107,26 @@ function onOverlayClick(evt) {
 }
 
 // Закрытие модального окна по нажатию клавиши ESC.
-lightboxOverlay.addEventListener('click', onEscKeyPress)
+lightboxOverlay.addEventListener('click', onPressEscape)
 
-function onEscKeyPress(evt) {
-  const ESC_KEY_CODE = 'Escape';
-  const isEscKey = evt.code === ESC_KEY_CODE;
-console.log(evt);
-  if (isEscKey) {
-  closeModal();
-  }
+function onPressEscape(evt) {
+  if (evt.code === 'Escape') {
+      closeModal();
+    }
 }
 // function onPressEscape(evt) {
-//   if (evt.code === 'Escape') {
-//       closeModal();
-//     }
+//   const ESC_KEY_CODE = 'Escape';
+//   const isEscKey = evt.code === ESC_KEY_CODE;
+// console.log(evt);
+//   if (isEscKey) {
+//   closeModal();
+//   }
 // }
+
 // Пролистывание изображений галереи в открытом модальном окне клавишами "влево" и "вправо".
 //ArrowLeft
 
-function onArrowLeftPress(evt) {
+function onPressLeftArrow(evt) {
   const ARR_LEFT_KEY_CODE = 'ArrowLeft';
   const isArrLeftKey = evt.code === ARR_LEFT_KEY_CODE;
 
@@ -141,7 +144,7 @@ function onArrowLeftPress(evt) {
 
 //ArrowRight
 
-function onArrowRightPress(evt) {
+function onPressRightArrow(evt) {
   const ARR_RIGHT_KEY_CODE = 'ArrowRight';
   const isArrRightKey = evt.code === ARR_RIGHT_KEY_CODE;
 
