@@ -107,21 +107,19 @@ function onOverlayClick(evt) {
 // Закрытие модального окна по нажатию клавиши ESC.
 lightboxOverlay.addEventListener('click', onPressEscape)
 
-function onPressEscape(evt) {
-  if (evt.code === 'Escape') {
-      closeModal();
-    }
-}
-
 // function onPressEscape(evt) {
-//   const ESC_KEY_CODE = 'Escape';
-//   const isEscKey = evt.code === ESC_KEY_CODE;
-// console.log(evt);
-//   if (isEscKey) {
-//   closeModal();
-//   }
+//   if (evt.code === 'Escape') {
+//       closeModal();
+//     }
 // }
-
+function onPressEscape(evt) {
+  const ESC_KEY_CODE = 'Escape';
+  const isEscKey = evt.code === ESC_KEY_CODE;
+console.log(evt);
+  if (isEscKey) {
+  closeModal();
+  }
+}
 // Пролистывание изображений галереи в открытом модальном окне клавишами "влево" и "вправо".
 //ArrowLeft
 
