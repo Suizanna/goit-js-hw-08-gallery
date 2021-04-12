@@ -75,8 +75,8 @@ function openModal() {    // при нажатии на элемент доба�
   lightboxRef.classList.add('is-open');     //модальное окно
 
   window.addEventListener('keydown', onEscKeyPress); 
-  // window.addEventListener('keydown',  onArrowLeftPress);
-  // window.addEventListener('keydown', onArrowRightPress);
+  window.addEventListener('keydown',  onArrowLeftPress);
+  window.addEventListener('keydown', onArrowRightPress);
   
 }
 // Закрытие модального окна по клику на кнопку .lightbox__button.
@@ -89,8 +89,8 @@ function closeModal() {
   galleryImgRef.alt = '';
 
   window.removeEventListener('keydown', onEscKeyPress); //'keydown реагирует на все клавиши 
-  // window.removeEventListener('keydown', onArrowLeftPress);
-  // window.removeEventListener('keydown', onArrowRightPress);
+  window.removeEventListener('keydown', onArrowLeftPress);
+  window.removeEventListener('keydown', onArrowRightPress);
 }
 
 
@@ -108,44 +108,47 @@ function onOverlayClick(evt) {
 lightboxOverlay.addEventListener('click', onEscKeyPress)
 
 function onEscKeyPress(evt) {
-  if (evt.code === 'ESCAPE') {
-    closeModal();
+  const ESC_KEY_CODE = 'Escape';
+  const isEscKey = evt.code === ESC_KEY_CODE;
+console.log(evt);
+  if (isEscKey) {
+  closeModal();
   }
 }
 
-// // Пролистывание изображений галереи в открытом модальном окне клавишами "влево" и "вправо".
-// //ArrowLeft
+// Пролистывание изображений галереи в открытом модальном окне клавишами "влево" и "вправо".
+//ArrowLeft
 
-// function onArrowLeftPress(evt) {
-//   const ARR_LEFT_KEY_CODE = 'ArrowLeft';
-//   const isArrLeftKey = evt.code === ARR_LEFT_KEY_CODE;
+function onArrowLeftPress(evt) {
+  const ARR_LEFT_KEY_CODE = 'ArrowLeft';
+  const isArrLeftKey = evt.code === ARR_LEFT_KEY_CODE;
 
-//   if (isArrLeftKey) {
-//     const sources = itemsDefault.map(({ original }) => original);
-//     let indexOfCurrentImg = sources.indexOf(galleryImgRef.src);
+  if (isArrLeftKey) {
+    const sources = itemsDefault.map(({ original }) => original);
+    let indexOfCurrentImg = sources.indexOf(galleryImgRef.src);
 
-//     if (indexOfCurrentImg === 0) {
-//       indexOfCurrentImg = sources.length;
-//     }
-//     galleryImgRef.src = sources[indexOfCurrentImg - 1];
-//     console.log(indexOfCurrentImg);
-//   }
-// }
+    if (indexOfCurrentImg === 0) {
+      indexOfCurrentImg = sources.length;
+    }
+    galleryImgRef.src = sources[indexOfCurrentImg - 1];
+    console.log(indexOfCurrentImg);
+  }
+}
 
-// //ArrowRight
+//ArrowRight
 
-// function onArrowRightPress(evt) {
-//   const ARR_RIGHT_KEY_CODE = 'ArrowRight';
-//   const isArrRightKey = evt.code === ARR_RIGHT_KEY_CODE;
+function onArrowRightPress(evt) {
+  const ARR_RIGHT_KEY_CODE = 'ArrowRight';
+  const isArrRightKey = evt.code === ARR_RIGHT_KEY_CODE;
 
-//   if (isArrRightKey) {
-//     const sources = itemsDefault.map(({ original }) => original);
-//     let indexOfCurrentImg = sources.indexOf(galleryImgRef.src);
+  if (isArrRightKey) {
+    const sources = itemsDefault.map(({ original }) => original);
+    let indexOfCurrentImg = sources.indexOf(galleryImgRef.src);
 
-//     if (indexOfCurrentImg + 1 > sources.length - 1) {
-//       indexOfCurrentImg = -1;
-//     }
-//     galleryImgRef.src = sources[indexOfCurrentImg + 1];
-//     console.log(indexOfCurrentImg + 1);
-//   }
-// }
+    if (indexOfCurrentImg + 1 > sources.length - 1) {
+      indexOfCurrentImg = -1;
+    }
+    galleryImgRef.src = sources[indexOfCurrentImg + 1];
+    console.log(indexOfCurrentImg + 1);
+  }
+}
