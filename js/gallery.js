@@ -72,27 +72,27 @@ function onGalleryClick (evt) {
 
 
 // Открытие модального окна по клику на элементе галереи.
+// Коллбек для слушателя открытия модалки
 
-function openModal() {    // при нажатии на элемент добавляем класс открытия модального окна. 
+function openModal() {       // при нажатии на элемент добавляем класс открытия модального окна. 
   lightboxRef.classList.add('is-open');     //модальное окно
-
-  window.addEventListener('keydown', onPressEscape); 
-  window.addEventListener('keydown', onPressRightArrow);
-  window.addEventListener('keydown', onPressLeftArrow);
   
+  // Добавляет слушателей для манипуляций с клавиатуры
+  window.addEventListener('keydown', onPressEscape); 
 }
-// Закрытие модального окна по клику на кнопку .lightbox__button.
+
+// Закрытие модального окна по клику 
 
 btnClose.addEventListener('click', closeModal) // слушатель для кнопки закрытия('.lightbox__button')
-
-function closeModal() {
+ 
+function closeModal() {   
   lightboxRef.classList.remove('is-open');
   galleryImgRef.src = ''; // Очистка значения атрибута src элемента img.lightbox__image.
   galleryImgRef.alt = '';
 
   window.removeEventListener('keydown', onPressEscape); //'keydown реагирует на все клавиши 
-  window.removeEventListener('keydown', onPressRightArrow);
-  window.removeEventListener('keydown', onPressLeftArrow);
+  // window.removeEventListener('keydown', onPressRightArrow);
+  // window.removeEventListener('keydown', onPressLeftArrow);
 }
 
 
@@ -114,48 +114,65 @@ function onPressEscape(evt) {
       closeModal();
     }
 }
-// function onPressEscape(evt) {
-//   const ESC_KEY_CODE = 'Escape';
-//   const isEscKey = evt.code === ESC_KEY_CODE;
-// console.log(evt);
-//   if (isEscKey) {
-//   closeModal();
+
+// ========= функция для пролистывания изображений в модалке =========
+window.addEventListener('keydown', changeImage); // добавляет слушатель на < > .
+
+const images =  gallery.map((el) => el.original)
+let currentImg = 0
+function changeImage(event) {
+  if (event.code === 'ArrowRight') {
+    if (currentImg === images.length - 1) {
+      return
+    } else {
+      currentImg += 1;
+    }
+    galleryImgRef.src = images[currentImg]
+    galleryImgRef.alt =  gallery[currentImg].description
+    }
+  if (event.code === 'ArrowLeft') {
+    if (currentImg === 0) {
+      return
+    } else {
+      currentImg -= 1;
+    }
+    galleryImgRef.src = images[currentImg]
+    galleryImgRef.alt =  gallery[currentImg].description
+  }
+}
+
+// // 2 вар
+// window.addEventListener('keydown', onPressRightArrow);
+// window.addEventListener('keydown', onPressLeftArrow);
+
+// //ArrowLeft
+// function onPressLeftArrow(evt) {
+//   const pressLeft = evt.code === 'ArrowLeft';
+
+//   if (pressLeft) {
+//     const sources = gallery.map(({ original }) => original);
+//     let indexOfCurrentImg = sources.indexOf(galleryImgRef.src);
+
+//     if (indexOfCurrentImg === 0) {
+//       indexOfCurrentImg = sources.length;
+//     }
+//     galleryImgRef.src = sources[indexOfCurrentImg - 1];
+//     console.log(indexOfCurrentImg);
 //   }
 // }
 
-// Пролистывание изображений галереи в открытом модальном окне клавишами "влево" и "вправо".
-//ArrowLeft
+// //ArrowRight
+// function onPressRightArrow(evt) {
+//   const pressRight = evt.code === 'ArrowRight';
 
-function onPressLeftArrow(evt) {
-  const ARR_LEFT_KEY_CODE = 'ArrowLeft';
-  const isArrLeftKey = evt.code === ARR_LEFT_KEY_CODE;
+//   if (pressRight) {
+//     const sources = gallery.map(({ original }) => original);
+//     let indexOfCurrentImg = sources.indexOf(galleryImgRef.src);
 
-  if (isArrLeftKey) {
-    const sources = itemsDefault.map(({ original }) => original);
-    let indexOfCurrentImg = sources.indexOf(galleryImgRef.src);
-
-    if (indexOfCurrentImg === 0) {
-      indexOfCurrentImg = sources.length;
-    }
-    galleryImgRef.src = sources[indexOfCurrentImg - 1];
-    console.log(indexOfCurrentImg);
-  }
-}
-
-//ArrowRight
-
-function onPressRightArrow(evt) {
-  const ARR_RIGHT_KEY_CODE = 'ArrowRight';
-  const isArrRightKey = evt.code === ARR_RIGHT_KEY_CODE;
-
-  if (isArrRightKey) {
-    const sources = itemsDefault.map(({ original }) => original);
-    let indexOfCurrentImg = sources.indexOf(galleryImgRef.src);
-
-    if (indexOfCurrentImg + 1 > sources.length - 1) {
-      indexOfCurrentImg = -1;
-    }
-    galleryImgRef.src = sources[indexOfCurrentImg + 1];
-    console.log(indexOfCurrentImg + 1);
-  }
-}
+//     if (indexOfCurrentImg + 1 > sources.length - 1) {
+//       indexOfCurrentImg = -1;
+//     }
+//     galleryImgRef.src = sources[indexOfCurrentImg + 1];
+//     console.log(indexOfCurrentImg + 1);
+//   }
+// }
