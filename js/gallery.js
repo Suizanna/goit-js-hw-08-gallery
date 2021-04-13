@@ -79,6 +79,9 @@ function openModal() {       // при нажатии на элемент доб
   
   // Добавляет слушателей для манипуляций с клавиатуры
   window.addEventListener('keydown', onPressEscape); 
+  window.addEventListener('keydown', onPressRightArrow);
+  window.addEventListener('keydown', onPressLeftArrow);
+  // window.addEventListener('keydown', closeModal); // закрыв от любой клавиши
 }
 
 // Закрытие модального окна по клику 
@@ -91,8 +94,8 @@ function closeModal() {
   galleryImgRef.alt = '';
 
   window.removeEventListener('keydown', onPressEscape); //'keydown реагирует на все клавиши 
-  // window.removeEventListener('keydown', onPressRightArrow);
-  // window.removeEventListener('keydown', onPressLeftArrow);
+  window.removeEventListener('keydown', onPressRightArrow);
+  window.removeEventListener('keydown', onPressLeftArrow);
 }
 
 
@@ -114,65 +117,77 @@ function onPressEscape(evt) {
       closeModal();
     }
 }
+// function onPressEscape(evt) {
+//   const ESC_KEY_CODE = 'Escape';
+//   const isEscKey = evt.code === ESC_KEY_CODE;
+// console.log(evt);
+//   if (isEscKey) {
+//   closeModal();
+//   }
+// }
 
-// ========= функция для пролистывания изображений в модалке =========
-window.addEventListener('keydown', changeImage); // добавляет слушатель на < > .
+// Пролистывание изображений галереи в открытом модальном окне клавишами "влево" и "вправо".
 
-const images =  gallery.map((el) => el.original)
-let currentImg = 0
-function changeImage(event) {
-  if (event.code === 'ArrowRight') {
-    if (currentImg === images.length - 1) {
-      return
-    } else {
-      currentImg += 1;
+window.addEventListener('keydown', onPressRightArrow);
+window.addEventListener('keydown', onPressLeftArrow);
+
+//ArrowLeft
+function onPressLeftArrow(evt) {
+  const pressLeft = evt.code === 'ArrowLeft';
+
+  if (pressLeft) {
+    const sources = gallery.map(({ original }) => original);
+    let indexOfCurrentImg = sources.indexOf(galleryImgRef.src);
+
+    if (indexOfCurrentImg === 0) {
+      indexOfCurrentImg = sources.length;
     }
-    galleryImgRef.src = images[currentImg]
-    galleryImgRef.alt =  gallery[currentImg].description
+    galleryImgRef.src = sources[indexOfCurrentImg - 1];
+    console.log(indexOfCurrentImg);
+  }
+}
+
+//ArrowRight
+function onPressRightArrow(evt) {
+  const pressRight = evt.code === 'ArrowRight';
+
+  if (pressRight) {
+    const sources = gallery.map(({ original }) => original);
+    let indexOfCurrentImg = sources.indexOf(galleryImgRef.src);
+
+    if (indexOfCurrentImg + 1 > sources.length - 1) {
+      indexOfCurrentImg = -1;
     }
-  if (event.code === 'ArrowLeft') {
-    if (currentImg === 0) {
-      return
-    } else {
-      currentImg -= 1;
-    }
-    galleryImgRef.src = images[currentImg]
-    galleryImgRef.alt =  gallery[currentImg].description
+    galleryImgRef.src = sources[indexOfCurrentImg + 1];
+    console.log(indexOfCurrentImg + 1);
   }
 }
 
 // // 2 вар
-// window.addEventListener('keydown', onPressRightArrow);
-// window.addEventListener('keydown', onPressLeftArrow);
-
-// //ArrowLeft
-// function onPressLeftArrow(evt) {
-//   const pressLeft = evt.code === 'ArrowLeft';
-
-//   if (pressLeft) {
-//     const sources = gallery.map(({ original }) => original);
-//     let indexOfCurrentImg = sources.indexOf(galleryImgRef.src);
-
-//     if (indexOfCurrentImg === 0) {
-//       indexOfCurrentImg = sources.length;
+// // ========= функция для пролистывания изображений в модалке не по кругу =========
+// const images =  gallery.map((el) => el.original)
+// let currentImg = 0
+// function changeImage(event) {
+//   if (event.code === 'ArrowRight') {
+//     if (currentImg === images.length - 1) {
+//       return
+//     } else {
+//       currentImg += 1;
 //     }
-//     galleryImgRef.src = sources[indexOfCurrentImg - 1];
-//     console.log(indexOfCurrentImg);
+//     galleryImgRef.src = images[currentImg]
+//     galleryImgRef.alt =  gallery[currentImg].description
+//     }
+//   if (event.code === 'ArrowLeft') {
+//     if (currentImg === 0) {
+//       return
+//     } else {
+//       currentImg -= 1;
+//     }
+//     galleryImgRef.src = images[currentImg]
+//     galleryImgRef.alt =  gallery[currentImg].description
 //   }
 // }
 
-// //ArrowRight
-// function onPressRightArrow(evt) {
-//   const pressRight = evt.code === 'ArrowRight';
+// window.addEventListener('keydown', changeImage); // добавляет слушатель на < > .
 
-//   if (pressRight) {
-//     const sources = gallery.map(({ original }) => original);
-//     let indexOfCurrentImg = sources.indexOf(galleryImgRef.src);
 
-//     if (indexOfCurrentImg + 1 > sources.length - 1) {
-//       indexOfCurrentImg = -1;
-//     }
-//     galleryImgRef.src = sources[indexOfCurrentImg + 1];
-//     console.log(indexOfCurrentImg + 1);
-//   }
-// }
